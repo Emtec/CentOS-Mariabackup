@@ -3,13 +3,13 @@
 export LC_ALL=C
 
 days_of_backups=3  # Must be less than 7
-backup_owner="backup"
+#backup_owner="backup"
 parent_dir="/backups/mysql"
-defaults_file="/etc/mysql/backup.cnf"
-todays_dir="${parent_dir}/$(date +%a)"
+defaults_file="/etc/my.cnf.d/mariabackup.cnf"
+todays_dir="${parent_dir}/$(date +%A)"
 log_file="${todays_dir}/backup-progress.log"
 #encryption_key_file="${parent_dir}/encryption_key"
-now="$(date +%m-%d-%Y_%H-%M-%S)"
+now="$(date +%Y-%m-%d_%H-%M-%S)"
 processors="$(nproc --all)"
 
 # Use this to echo to standard error
@@ -22,11 +22,11 @@ trap 'error "An unexpected error occurred."' ERR
 
 sanity_check () {
     # Check user running the script
-    if [ "$USER" != "$backup_owner" ]; then
-        error "Script can only be run as the \"$backup_owner\" user"
+    if [[ -n "${backup_owner}" && "${USER}" != "${backup_owner}" ]]; then
+        error "Script can only be run as the \"${backup_owner}\" user"
     fi
     
-    # Check whether the encryption key file is available
+    # DISABLED: Check whether the encryption key file is available
     #if [ ! -r "${encryption_key_file}" ]; then
     #    error "Cannot read encryption key at ${encryption_key_file}"
     #fi
@@ -64,7 +64,7 @@ set_options () {
 
 rotate_old () {
     # Remove the oldest backup in rotation
-    day_dir_to_remove="${parent_dir}/$(date --date="${days_of_backups} days ago" +%a)"
+    day_dir_to_remove="${parent_dir}/$(date --date="${days_of_backups} days ago" +%A)"
 
     if [ -d "${day_dir_to_remove}" ]; then
         rm -rf "${day_dir_to_remove}"
