@@ -2,7 +2,7 @@
 
 export LC_ALL=C
 
-backup_owner="backup"
+#backup_owner="backup"
 #encryption_key_file="/backups/mysql/encryption_key"
 log_file="extract-progress.log"
 number_of_args="${#}"
@@ -18,7 +18,7 @@ trap 'error "An unexpected error occurred.  Try checking the \"${log_file}\" fil
 
 sanity_check () {
     # Check user running the script
-    if [ "${USER}" != "${backup_owner}" ]; then
+    if [[ -n "${backup_owner}" && "${USER}" != "${backup_owner}" ]]; then
         error "Script can only be run as the \"${backup_owner}\" user"
     fi
     
@@ -55,9 +55,7 @@ do_extraction () {
             "--decompress"
         )
 
-        #innobackupex "${innobackupex_args[@]}" "${restore_dir}"
         mariabackup "${innobackupex_args[@]}" --target-dir="${restore_dir}"
-        #find "${restore_dir}" -name "*.xbcrypt" -exec rm {} \;
         find "${restore_dir}" -name "*.qp" -exec rm {} \;
     
         printf "\n\nFinished work on %s\n\n" "${file}"
@@ -73,7 +71,7 @@ ok_count="$(grep -c 'completed OK' "${log_file}")"
 # informational "completed OK".  If the processing was successful, an
 # additional "completed OK" is printed. Together, this means there should be 2
 # notices per backup file if the process was successful.
-if (( $ok_count !=  2 * $# )); then
+if (( $ok_count !=  $# )); then
     error "It looks like something went wrong. Please check the \"${log_file}\" file for additional information"
 else
     printf "Extraction complete! Backup directories have been extracted to the \"restore\" directory.\n"
