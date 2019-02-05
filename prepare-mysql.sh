@@ -116,5 +116,5 @@ Start MySQL and import tablespace for restored table(s)
 
 EOF
 else
-    error "It looks like something went wrong.  Check the \"${log_file}\" file for more information."
+    error "It looks like something went wrong. Target folder may have already been prepared. Check the \"${log_file}\" file for more information."
 fi
