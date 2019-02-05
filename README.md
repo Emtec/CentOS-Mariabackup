@@ -4,6 +4,16 @@ This repository contains a few scripts for automating backups with mariabackup (
 
 These instructions adapted for CentOS 7.x & MariaDB 10.x were mostly taken from <a href="https://github.com/nullart">nullart</a>'s <a href="https://github.com/nullart/debian-ubuntu-mariadb-backup">debian-ubuntu-mariadb-backup</a> repository which referenced <a href="https://www.digitalocean.com/community/users/jellingwood">Justin Ellingwood</a>'s original article <a href="https://www.digitalocean.com/community/tutorials/how-to-configure-mysql-backups-with-percona-xtrabackup-on-ubuntu-16-04">here</a>.
 
+## Requirements
+You will require the **qpress** utility from Percona to perform extraction.
+
+Check the latest instructions from Percona website for installing **qpress** using the official Percona repository.
+
+```
+$ yum install https://repo.percona.com/yum/percona-release-latest.noarch.rpm
+$ yum install qpress
+```
+
 ## Create a MySQL User with Appropriate Privileges
 
 The first thing we need to do is create a new MySQL user configured to handle backup tasks. We will only give this user the privileges it needs to copy the data safely while the system is running.
@@ -118,15 +128,6 @@ The script looks in the current directory for directories beginning with full- o
 Once all of the backups have been combined, the uncommitted transactions are rolled back. At this point, the full- backup will represent a consistent set of data that can be moved into MySQL's data directory.
 
 In order to minimize chance of data loss, the script stops short of copying the files into the data directory. This way, the user can manually verify the backup contents and the log file created during this process, and decide what to do with the current contents of the MySQL data directory. The commands needed to restore the files completely are displayed when the command exits.
-
-You will require the **qpress** utility from Percona to perform extraction.
-
-Check the latest instructions from Percona website for installing **qpress** using the official Percona repository.
-
-```
-$ yum install https://repo.percona.com/yum/percona-release-latest.noarch.rpm
-$ yum install qpress
-```
 
 ## Testing the MySQL Backup and Restore Scripts
 
