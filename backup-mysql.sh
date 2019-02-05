@@ -35,14 +35,14 @@ sanity_check () {
 
 set_options () {
     # List the innobackupex arguments
-    #declare -ga innobackupex_args=(
+    #declare -ga mariabackup_args=(
         #"--encrypt=AES256"
         #"--encrypt-key-file=${encryption_key_file}"
         #"--encrypt-threads=${processors}"
         #"--slave-info"
         #"--incremental"
         
-    innobackupex_args=(
+    mariabackup_args=(
         "--defaults-file=${defaults_file}"
         "--extra-lsndir=${todays_dir}"
         "--backup"
@@ -59,7 +59,7 @@ set_options () {
     if grep -q -s "to_lsn" "${todays_dir}/xtrabackup_checkpoints"; then
         backup_type="incremental"
         lsn=$(awk '/to_lsn/ {print $3;}' "${todays_dir}/xtrabackup_checkpoints")
-        innobackupex_args+=( "--incremental-lsn=${lsn}" )
+        mariabackup_args+=( "--incremental-lsn=${lsn}" )
     fi
 }
 
@@ -76,8 +76,8 @@ take_backup () {
     # Make sure today's backup directory is available and take the actual backup
     mkdir -p "${todays_dir}"
     find "${todays_dir}" -type f -name "*.incomplete" -delete
-    #innobackupex "${innobackupex_args[@]}" "${todays_dir}" > "${todays_dir}/${backup_type}-${now}.xbstream.incomplete" 2> "${log_file}"
-    mariabackup "${innobackupex_args[@]}" "--target-dir=${todays_dir}" > "${todays_dir}/${backup_type}-${now}.xbstream.incomplete" 2> "${log_file}"
+    #innobackupex "${mariabackup_args[@]}" "${todays_dir}" > "${todays_dir}/${backup_type}-${now}.xbstream.incomplete" 2> "${log_file}"
+    mariabackup "${mariabackup_args[@]}" "--target-dir=${todays_dir}" > "${todays_dir}/${backup_type}-${now}.xbstream.incomplete" 2> "${log_file}"
     
     mv "${todays_dir}/${backup_type}-${now}.xbstream.incomplete" "${todays_dir}/${backup_type}-${now}.xbstream"
 }
