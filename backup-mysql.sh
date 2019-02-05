@@ -4,13 +4,14 @@ export LC_ALL=C
 
 days_of_backups=3  # Must be less than 7
 #backup_owner="backup"
+#encryption_key_file="${parent_dir}/encryption_key"
 parent_dir="/backups/mysql"
 defaults_file="/etc/my.cnf.d/mariabackup.cnf"
 todays_dir="${parent_dir}/$(date +%A)"
 log_file="${todays_dir}/backup-progress.log"
-#encryption_key_file="${parent_dir}/encryption_key"
 now="$(date +%Y-%m-%d_%H-%M-%S)"
-processors="$(nproc --all)"
+#processors="$(nproc --all)" # Use all the CPU of cores for compression
+processors="$((`nproc --all`/2))" # (Default) Use half the number of cores / Production servers
 
 # Use this to echo to standard error
 error () {
