@@ -6,7 +6,8 @@ export LC_ALL=C
 #encryption_key_file="/backups/mysql/encryption_key"
 log_file="extract-progress.log"
 number_of_args="${#}"
-processors="$(nproc --all)"
+processors="$(nproc --all)" # Use all the CPU of cores for decompression
+#processors="$((`nproc --all`/2))" # Use half the number of cores / Production servers
 
 # Use this to echo to standard error
 error () {
