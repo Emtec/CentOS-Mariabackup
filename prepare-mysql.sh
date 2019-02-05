@@ -53,7 +53,7 @@ sanity_check && do_prepare > "${log_file}" 2>&1
 # the process, a final full apply is performed, generating another 2 messages.
 ok_count="$(grep -c 'completed OK' "${log_file}")"
 
-if (( ${ok_count} == ${#full_dirs[@]} + ${#incremental_dirs[@]} )); then
+if (( ${ok_count} == (${#full_dirs[@]} + ${#incremental_dirs[@]} + 1) )); then
     cat << EOF
 Backup looks to be fully prepared.  Please check the "prepare-progress.log" file
 to verify before continuing.
