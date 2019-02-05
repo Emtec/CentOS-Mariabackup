@@ -51,12 +51,12 @@ do_extraction () {
         mbstream -x -C "${restore_dir}" < "${file}"
             #"--decrypt=AES256"
             #"--encrypt-key-file=${encryption_key_file}"
-        innobackupex_args=(
+        mariabackup_args=(
             "--parallel=${processors}"
             "--decompress"
         )
 
-        mariabackup "${innobackupex_args[@]}" --target-dir="${restore_dir}"
+        mariabackup "${mariabackup_args[@]}" --target-dir="${restore_dir}"
         find "${restore_dir}" -name "*.qp" -exec rm {} \;
     
         printf "\n\nFinished work on %s\n\n" "${file}"
