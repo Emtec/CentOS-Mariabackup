@@ -4,8 +4,8 @@ export LC_ALL=C
 
 days_of_backups=3  # Must be less than 7
 #backup_owner="backup"
-#encryption_key_file="${parent_dir}/encryption_key"
 parent_dir="/backups/mysql"
+#encryption_key_file="${parent_dir}/encryption_key"
 defaults_file="/etc/my.cnf.d/mariabackup.cnf"
 todays_dir="${parent_dir}/$(date +%A)"
 log_file="${todays_dir}/backup-progress.log"
