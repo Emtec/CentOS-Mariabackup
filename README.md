@@ -5,7 +5,7 @@ This repository contains a few scripts for automating backups with mariabackup (
 These instructions adapted for CentOS 7.x & MariaDB 10.x were mostly taken from <a href="https://github.com/nullart">nullart</a>'s <a href="https://github.com/nullart/debian-ubuntu-mariadb-backup">debian-ubuntu-mariadb-backup</a> repository which referenced <a href="https://www.digitalocean.com/community/users/jellingwood">Justin Ellingwood</a>'s original article <a href="https://www.digitalocean.com/community/tutorials/how-to-configure-mysql-backups-with-percona-xtrabackup-on-ubuntu-16-04">here</a>.
 
 ## Requirements
-You will require the **qpress** utility from Percona to perform extraction.
+You will require the **qpress** utility from Percona to perform decompression and extraction. Mariabackup recommends using third-party compression tools, however from testing, it seems the native Xtrabackup --compress option still produces the fastest result (requires further testing).
 
 Check the latest instructions from Percona website for installing **qpress** using the official Percona repository.
 
