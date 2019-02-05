@@ -10,8 +10,8 @@ defaults_file="/etc/my.cnf.d/mariabackup.cnf"
 todays_dir="${parent_dir}/$(date +%A)"
 log_file="${todays_dir}/backup-progress.log"
 now="$(date +%Y-%m-%d_%H-%M-%S)"
-#processors="$(nproc --all)" # Use all the CPU of cores for compression
-processors="$((`nproc --all`/2))" # (Default) Use half the number of cores / Production servers
+processors="$(nproc --all)" # Use all the CPU of cores for compression
+#processors="$((`nproc --all`/2))" # Use half the number of cores if live database performance suffers
 
 # Use this to echo to standard error
 error () {
