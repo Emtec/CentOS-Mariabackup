@@ -7,7 +7,7 @@ export LC_ALL=C
 log_file="extract-progress.log"
 number_of_args="${#}"
 processors="$(nproc --all)" # Use all the CPU of cores for decompression
-#processors="$((`nproc --all`/2))" # Use half the number of cores / Production servers
+#processors="$((`nproc --all`/2))" # Use half the number of cores if live database performance suffers
 
 # Use this to echo to standard error
 error () {
